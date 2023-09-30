@@ -1,7 +1,5 @@
 package com.vbuser.ssl;
 
-import net.minecraft.util.math.BlockPos;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -51,10 +49,10 @@ public class KeyGenerate {
         }
     }
 
-    public static BigInteger generatePrimeFromBlockPos(BlockPos pos){
+    public static BigInteger generatePrimeFromTime(){
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest((String.valueOf(pos)+time).getBytes());
+            byte[] hash = digest.digest(String.valueOf(time).getBytes());
             BigInteger hashValue = new BigInteger(1, hash);
             return hashValue.nextProbablePrime();
         }

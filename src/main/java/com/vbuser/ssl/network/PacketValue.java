@@ -1,4 +1,4 @@
-package com.vbuser.ssl;
+package com.vbuser.ssl.network;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -18,16 +18,16 @@ import java.util.Map;
 
 public class PacketValue implements IMessage {
 
-    public int x,y,z,r,meta;
+    private int x,y,z,id,meta;
 
-    public PacketValue() {
+    public PacketValue(){
     }
 
-    public PacketValue(int x, int y, int z, int r,int meta){
+    public PacketValue(int x,int y,int z,int id,int meta){
         this.x = x;
         this.y = y;
         this.z = z;
-        this.r = r;
+        this.id = id;
         this.meta = meta;
     }
 
@@ -37,50 +37,49 @@ public class PacketValue implements IMessage {
         x = packetBuffer.readInt();
         y = packetBuffer.readInt();
         z = packetBuffer.readInt();
-        r = packetBuffer.readInt();
+        id = packetBuffer.readInt();
         meta = packetBuffer.readInt();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        PacketBuffer packetBuffer = new PacketBuffer(buf);
-        packetBuffer.writeInt(x);
-        packetBuffer.writeInt(y);
-        packetBuffer.writeInt(z);
-        packetBuffer.writeInt(r);
-        packetBuffer.writeInt(meta);
+        PacketBuffer buffet = new PacketBuffer(buf);
+        buffet.writeInt(x);
+        buffet.writeInt(y);
+        buffet.writeInt(z);
+        buffet.writeInt(id);
+        buffet.writeInt(meta);
     }
 
-    public static class PacketValueHandler implements IMessageHandler<PacketValue, IMessage> {
+    public static class PacketValueHandler implements IMessageHandler<PacketValue,IMessage>{
+
         @Override
         public IMessage onMessage(PacketValue message, MessageContext ctx) {
             File saveDir = ctx.getServerHandler().player.getServerWorld().getSaveHandler().getWorldDirectory();
-            File encryptionFile = new File(saveDir, "encryption.json");
+            File encryptionFile = new File(saveDir,"encryption.json");
 
-            try {
-                Map<String, Map<String, Integer>> existingData = new HashMap<>();
-
-                if (encryptionFile.exists()) {
+            try{
+                Map<String, Map<String,Integer>> existingData = new HashMap<>();
+                if(encryptionFile.exists()){
                     String existingJson = FileUtils.readFileToString(encryptionFile, StandardCharsets.UTF_8);
-                    existingData = new Gson().fromJson(existingJson, new TypeToken<Map<String, Map<String, Integer>>>() {}.getType());
+                    existingData = new Gson().fromJson(existingJson, new TypeToken<Map<String, Map<String,Integer>>>(){}.getType());
                 }
 
-                String key = String.format("%d,%d,%d", message.x, message.y, message.z);
-                Map<String, Integer> newData = new HashMap<>();
-                newData.put("r", message.r);
-                newData.put("meta", message.meta);
-                existingData.put(key, newData);
+                String key = String.format("%d,%d,%d",message.x,message.y,message.z);
+                Map<String,Integer> newData = new HashMap<>();
+                newData.put("id",message.id);
+                newData.put("meta",message.meta);
+                existingData.put(key,newData);
 
                 FileWriter writer = new FileWriter(encryptionFile);
                 String jsonOutput = new Gson().toJson(existingData);
                 writer.write(jsonOutput);
                 writer.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e){
                 throw new RuntimeException(e);
             }
-
             return null;
         }
     }
-
 }

@@ -100,4 +100,12 @@ public class KeyGenerate {
         }
         return x1;
     }
+
+    public static BigInteger encrypt(int m, BigInteger e, BigInteger n){
+        return BigInteger.valueOf(m).modPow(e, n);
+    }
+
+    public static BigInteger decrypt(BigInteger c, BigInteger d, BigInteger n){
+        return c.modPow(d, n);
+    }
 }

@@ -7,8 +7,12 @@ import com.vbuser.ssl.network.PacketDownload;
 import com.vbuser.ssl.network.PacketKey;
 import com.vbuser.ssl.network.PacketRequest;
 import com.vbuser.ssl.network.PacketValue;
+import com.vbuser.ssl.render.BlockRenderer;
+import com.vbuser.ssl.render.TestRender;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -33,5 +37,11 @@ public class Main {
         event.registerServerCommand(new CommandEncryption());
         event.registerServerCommand(new CommandKeyGen());
         event.registerServerCommand(new CommandDownLoad());
+    }
+
+    @Mod.EventHandler
+    public void PreInit(FMLPreInitializationEvent event){
+        MinecraftForge.EVENT_BUS.register(new TestRender());
+        MinecraftForge.EVENT_BUS.register(new BlockRenderer());
     }
 }

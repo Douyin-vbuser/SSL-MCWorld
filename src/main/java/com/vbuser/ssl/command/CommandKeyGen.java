@@ -33,7 +33,6 @@ public class CommandKeyGen extends CommandBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args){
         if(sender instanceof EntityPlayer){
-            EntityPlayer player = (EntityPlayer) sender;
             KeyGenerate.time = System.currentTimeMillis();
             try {
                 InetAddress address = InetAddress.getLocalHost();

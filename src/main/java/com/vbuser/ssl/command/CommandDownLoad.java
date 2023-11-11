@@ -23,6 +23,7 @@ public class CommandDownLoad extends CommandBase {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args)  {
         if(sender instanceof EntityPlayer){
             EntityPlayer player = (EntityPlayer) sender;
+            KeyStore.client_key_count = 0;
             Main.networkWrapper.sendToServer(new PacketRequest(player.getUniqueID().toString(), KeyStore.e.toString(),KeyStore.n.toString()));
         }
     }

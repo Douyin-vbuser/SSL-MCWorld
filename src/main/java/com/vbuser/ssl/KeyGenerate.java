@@ -9,34 +9,6 @@ public class KeyGenerate {
 
     public static long time;
 
-    public static String getServerIPAddress(String ipAddress) {
-        if (ipAddress.length() < 7 || ipAddress.length() > 15 || !isValidIPv4(ipAddress)) {
-            return "127.0.0.1";
-        }
-        return ipAddress;
-    }
-
-    public static boolean isValidIPv4(String ipAddress) {
-        String[] parts = ipAddress.split("\\.");
-        if (parts.length != 4) {
-            return false;
-        }
-        for (String part : parts) {
-            try {
-                int num = Integer.parseInt(part);
-                if (num < 0 || num > 255) {
-                    return false;
-                }
-                if (part.length() > 1 && part.startsWith("0")) {
-                    return false;
-                }
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public static BigInteger generatePrimeFromIPAddress(String ipAddress) {
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

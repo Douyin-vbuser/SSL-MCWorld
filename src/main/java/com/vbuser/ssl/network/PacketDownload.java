@@ -2,6 +2,7 @@ package com.vbuser.ssl.network;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.vbuser.ssl.KeyStore;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
@@ -57,6 +58,8 @@ public class PacketDownload implements IMessage {
         public IMessage onMessage(PacketDownload message, MessageContext ctx) {
             File saveDir = new File(Minecraft.getMinecraft().mcDataDir,"logs");
             File encryptionFile = new File(saveDir,"encryption.json");
+
+            KeyStore.client_key_count ++;
 
             try{
                 Map<String, Map<String,String>> existingData = new HashMap<>();

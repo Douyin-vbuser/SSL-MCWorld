@@ -66,6 +66,7 @@ public class PacketRequest implements IMessage {
                     JsonElement jsonElement = jsonParser.parse(reader);
                     Gson gson = new Gson();
                     Map<String, Map<String, Integer>> data = gson.fromJson(jsonElement, new TypeToken<Map<String, Map<String, Integer>>>(){}.getType());
+                    KeyStore.server_key_count = 0;
 
                     for (Map.Entry<String, Map<String, Integer>> entry : data.entrySet()) {
                         String key = entry.getKey();
@@ -75,6 +76,7 @@ public class PacketRequest implements IMessage {
                         int x = Integer.parseInt(parts[0]);
                         int y = Integer.parseInt(parts[1]);
                         int z = Integer.parseInt(parts[2]);
+                        KeyStore.server_key_count ++;
 
                         String encrypted = KeyGenerate.encrypt(id,new BigInteger(message.e),new BigInteger(message.n)).toString();
                         Main.networkWrapper.sendTo(new PacketDownload(x,y,z,meta,encrypted), (EntityPlayerMP) ctx.getServerHandler().player.getServerWorld().getPlayerEntityByUUID(java.util.UUID.fromString(message.UUID)));

@@ -2,42 +2,27 @@ package com.vbuser.ssl.render;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.init.Blocks;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.lwjgl.opengl.GL11;
 
 public class BlockRenderer {
+    public static void onRenderWorldLast(IBlockState state,BlockPos blockPos) {
+        Minecraft mc = Minecraft.getMinecraft();
+        BlockRendererDispatcher dispatcher = mc.getBlockRendererDispatcher();
 
-    @SubscribeEvent
-    public void onRenderBlock(TickEvent.RenderTickEvent event) {
-        if(Minecraft.getMinecraft().player!=null) {
-            Minecraft mc = Minecraft.getMinecraft();
-            World world = mc.world;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
 
-            BlockPos blockPos = new BlockPos(6,6,6);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(-mc.getRenderManager().viewerPosX, -mc.getRenderManager().viewerPosY, -mc.getRenderManager().viewerPosZ);
 
-            IBlockState state = Blocks.GRASS.getDefaultState();
+        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 
-            GlStateManager.pushMatrix();
+        dispatcher.renderBlock(state, blockPos, mc.world, tessellator.getBuffer());
 
-            GlStateManager.translate(
-                    -mc.getRenderManager().viewerPosX,
-                    -mc.getRenderManager().viewerPosY,
-                    -mc.getRenderManager().viewerPosZ
-            );
-
-            RenderGlobal.drawSelectionBoundingBox(
-                    state.getSelectedBoundingBox(world, blockPos)
-                            .grow(0.002D)
-                            .offset(-blockPos.getX(), -blockPos.getY(), -blockPos.getZ()),
-                    1.0F, 1.0F, 1.0F, 1.0F
-            );
-
-            GlStateManager.popMatrix();
-        }
+        tessellator.draw();
+        GlStateManager.popMatrix();
     }
 }

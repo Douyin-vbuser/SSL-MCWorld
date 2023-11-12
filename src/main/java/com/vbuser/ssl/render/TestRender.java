@@ -10,11 +10,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.io.File;
 import java.io.FileReader;
@@ -26,7 +24,7 @@ import java.util.Map;
 public class TestRender {
 
     @SubscribeEvent
-    public void onRenderTick(TickEvent.RenderTickEvent event){
+    public void onRenderTick(RenderWorldLastEvent event){
         if(Minecraft.getMinecraft().player!=null) {
 
             BlockRendererDispatcher blockRenderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
@@ -62,21 +60,7 @@ public class TestRender {
                             IBlockState state = Block.getBlockById(result).getStateFromMeta(meta);
                             BlockPos pos = new BlockPos(x, y, z);
 
-                            //blockRenderer.renderBlock(state, pos, Minecraft.getMinecraft().world, Tessellator.getInstance().getBuffer());
-                            GlStateManager.translate(
-                                    -Minecraft.getMinecraft().getRenderManager().viewerPosX,
-                                    -Minecraft.getMinecraft().getRenderManager().viewerPosY,
-                                    -Minecraft.getMinecraft().getRenderManager().viewerPosZ
-                            );
-
-                            RenderGlobal.drawSelectionBoundingBox(
-                                    state.getSelectedBoundingBox(Minecraft.getMinecraft().world, pos)
-                                            .grow(0.002D)
-                                            .offset(-pos.getX(), -pos.getY(), -pos.getZ()),
-                                    1.0F, 1.0F, 1.0F, 1.0F
-                            );
-
-                            GlStateManager.popMatrix();
+                            BlockRenderer.onRenderWorldLast(state,pos);
                         }
                     }
                 } catch (IOException e) {

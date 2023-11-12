@@ -7,7 +7,6 @@ import com.vbuser.ssl.network.PacketDownload;
 import com.vbuser.ssl.network.PacketKey;
 import com.vbuser.ssl.network.PacketRequest;
 import com.vbuser.ssl.network.PacketValue;
-import com.vbuser.ssl.render.BlockRenderer;
 import com.vbuser.ssl.render.TestRender;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -42,6 +41,5 @@ public class Main {
     @Mod.EventHandler
     public void PreInit(FMLPreInitializationEvent event){
         MinecraftForge.EVENT_BUS.register(new TestRender());
-        MinecraftForge.EVENT_BUS.register(new BlockRenderer());
     }
 }

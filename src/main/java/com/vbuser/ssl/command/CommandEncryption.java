@@ -11,8 +11,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.security.SecureRandom;
-
 public class CommandEncryption extends CommandBase {
     @Override
     public String getName() {
@@ -48,12 +46,10 @@ public class CommandEncryption extends CommandBase {
         BlockPos pos = new BlockPos(x,y,z);
         Block block = world.getBlockState(pos).getBlock();
         int meta = block.getMetaFromState(world.getBlockState(pos));
+        int pre_id = Block.getIdFromBlock(block);
         if(!Block.isEqualTo(block, Blocks.AIR)){
-            SecureRandom random = new SecureRandom();
-            int r = random.nextInt(129);
-            int id = (Block.getIdFromBlock(block)+r)%255;
-            world.setBlockState(pos,Block.getBlockById(id).getDefaultState());
-            Main.networkWrapper.sendToServer(new PacketValue(x,y,z,id,meta));
+            world.setBlockState(pos,Blocks.AIR.getDefaultState());
+            Main.networkWrapper.sendToServer(new PacketValue(x,y,z,pre_id,meta));
         }
     }
 }

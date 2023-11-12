@@ -52,4 +52,6 @@ public class CommandEncryption extends CommandBase {
             Main.networkWrapper.sendToServer(new PacketValue(x,y,z,pre_id,meta));
         }
     }
+
+    public int getRequiredPermissionLevel(){return 2;}
 }

@@ -3,6 +3,7 @@ package com.vbuser.ssl.command;
 import com.vbuser.ssl.KeyStore;
 import com.vbuser.ssl.Main;
 import com.vbuser.ssl.network.PacketRequest;
+import com.vbuser.ssl.render.TestRender;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +26,9 @@ public class CommandDownLoad extends CommandBase {
             EntityPlayer player = (EntityPlayer) sender;
             KeyStore.client_key_count = 0;
             Main.networkWrapper.sendToServer(new PacketRequest(player.getUniqueID().toString(), KeyStore.e.toString(),KeyStore.n.toString()));
+            TestRender.loaded = true;
         }
     }
+
+    public int getRequiredPermissionLevel(){return 2;}
 }

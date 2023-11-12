@@ -3,6 +3,7 @@ package com.vbuser.ssl;
 import com.vbuser.ssl.command.CommandDownLoad;
 import com.vbuser.ssl.command.CommandEncryption;
 import com.vbuser.ssl.command.CommandKeyGen;
+import com.vbuser.ssl.command.CommandRender;
 import com.vbuser.ssl.network.PacketDownload;
 import com.vbuser.ssl.network.PacketKey;
 import com.vbuser.ssl.network.PacketRequest;
@@ -36,6 +37,7 @@ public class Main {
         event.registerServerCommand(new CommandEncryption());
         event.registerServerCommand(new CommandKeyGen());
         event.registerServerCommand(new CommandDownLoad());
+        event.registerServerCommand(new CommandRender());
     }
 
     @Mod.EventHandler

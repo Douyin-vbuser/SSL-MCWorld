@@ -53,5 +53,4 @@ public class CommandEncryption extends CommandBase {
         }
     }
 
-    public int getRequiredPermissionLevel(){return 2;}
 }

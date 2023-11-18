@@ -4,8 +4,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
@@ -27,14 +25,7 @@ public class BlockRenderer {
 
         bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 
-        for (EnumFacing side : EnumFacing.values()) {
-            BlockPos neighbor = blockPos.offset(side);
-            IBlockState neighborState = world.getBlockState(neighbor);
-
-            if (neighborState.getBlock() == Blocks.AIR) {
-                dispatcher.renderBlock(state, blockPos, world, bufferBuilder);
-            }
-        }
+        dispatcher.renderBlock(state, blockPos, world, bufferBuilder);
 
         tessellator.draw();
         GlStateManager.disableCull();
